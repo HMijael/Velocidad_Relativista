@@ -1,0 +1,153 @@
+:root {
+    --polar-white: #F8F9FA;
+    --pure-black: #0A0A0A;
+    --border-subtle: rgba(10, 10, 10, 0.14);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--polar-white);
+    color: var(--pure-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.player-wrapper {
+    width: 100%;
+    max-width: 880px;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    background-color: var(--pure-black);
+    border-radius: 14px;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 20px 45px rgba(10, 10, 10, 0.12);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: border-radius 0.3s ease;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+}
+
+video::-webkit-media-controls {
+    display: none !important;
+}
+
+/* Círculo blanco pequeño con trayectoria por el contorno */
+.play-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    background-color: var(--polar-white);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 0 8px rgba(248, 249, 250, 0.85);
+    will-change: transform, opacity;
+}
+
+.play-indicator.active {
+    opacity: 1;
+}
+
+/* Zonas sensibles para detección de cursor en las esquinas inferiores */
+.control-zone {
+    position: absolute;
+    bottom: 0;
+    height: 90px;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    z-index: 10;
+}
+
+.zone-left {
+    left: 0;
+    min-width: 150px;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.zone-right {
+    right: 0;
+    width: 120px;
+    justify-content: flex-end;
+}
+
+/* Botones estilizados en blanco polar y negro */
+.control-btn {
+    background-color: var(--polar-white);
+    color: var(--pure-black);
+    border: 1px solid var(--pure-black);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, opacity 0.25s ease;
+}
+
+.control-btn:hover {
+    background-color: var(--pure-black);
+    color: var(--polar-white);
+    border-color: var(--polar-white);
+    transform: scale(1.06);
+}
+
+.control-btn:active {
+    transform: scale(0.96);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Comportamiento en Pantalla Completa */
+.video-container:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+}
+
+.video-container:fullscreen video {
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Ocultar botones en pantalla completa por defecto */
+.video-container:fullscreen .control-btn {
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+}
+
+/* Mostrar solo los botones de la zona al desplazar el cursor a su posición */
+.video-container:fullscreen .control-zone:hover .control-btn {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
